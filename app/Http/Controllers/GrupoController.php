@@ -6,6 +6,8 @@ use App\Models\Grupo;
 use App\Http\Requests\StoreGrupoRequest;
 use App\Http\Requests\UpdateGrupoRequest;
 
+use function GuzzleHttp\Promise\all;
+
 class GrupoController extends Controller
 {
     /**
@@ -26,7 +28,13 @@ class GrupoController extends Controller
      */
     public function store(StoreGrupoRequest $request)
     {
-        //
+
+        try {
+            $grupo = Grupo::create($request->all());
+            return response()->json($grupo, 202);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**
@@ -49,7 +57,12 @@ class GrupoController extends Controller
      */
     public function update(UpdateGrupoRequest $request, Grupo $grupo)
     {
-        //
+        try {
+            $grupo->update($request->all());
+            return response()->json($grupo, 202);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**
@@ -60,6 +73,11 @@ class GrupoController extends Controller
      */
     public function destroy(Grupo $grupo)
     {
-        //
+        try {
+            $grupo->delete();
+            return response()->json("Apagado");
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage());
+        }
     }
 }
