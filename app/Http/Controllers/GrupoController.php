@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Grupo;
 use App\Http\Requests\StoreGrupoRequest;
 use App\Http\Requests\UpdateGrupoRequest;
+use App\Http\Resources\GrupoResource;
 
 use function GuzzleHttp\Promise\all;
 
@@ -17,7 +18,7 @@ class GrupoController extends Controller
      */
     public function index()
     {
-        //
+        return GrupoResource::collection(Grupo::all());
     }
 
     /**
@@ -45,7 +46,7 @@ class GrupoController extends Controller
      */
     public function show(Grupo $grupo)
     {
-        //
+        return new GrupoResource($grupo);
     }
 
     /**
