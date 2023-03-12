@@ -24,7 +24,9 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'grupo_id'=>'required|exists:App\Models\Grupo,id',
+            'name'=>'required',
+            'email'=>'required|email|unique:users,email,'.$this->user->id,
         ];
     }
 }

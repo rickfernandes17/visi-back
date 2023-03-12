@@ -30,12 +30,10 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         try {
+            $request->validated();
             $data = $request->all();
-            $user = User::create([
-                'name' =>   $data['name'],
-                'email'=>   $data['email'],
-                'password' => Hash::make($data['password'])
-            ]);
+            $data['password'] = Hash::make($data['password']);
+            $user = User::create($data);
             return response()->json($user, 202);
         } catch (\Throwable $th) {
             //throw $th;
@@ -63,10 +61,23 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         try {
-            $user->update($request->all());
+            $data = $request->all();
+            if (array_key_exists('password',$data)){
+                $data['password'] = Hash::make($data['password']);
+            }
+            $user->update($data);
             return response()->json($user, 202);
         } catch (\Throwable $th) {
             //throw $th;
+            switch ($th->getCode()) {
+                case 23000:
+                    return response()->json('', 500);
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
         }
     }
 

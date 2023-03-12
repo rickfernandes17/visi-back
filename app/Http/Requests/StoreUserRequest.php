@@ -24,7 +24,10 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'grupo_id'=>'required|exists:App\Models\Grupo,id',
+            'name'=>'required',
+            'email'=>'required|email|unique:users,email,except,id',
+            'password' =>'required'
         ];
     }
 }
