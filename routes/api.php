@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GrupoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiresource('grupos', GrupoController::class);
 Route::apiresource('users', UserController::class);
+
+Route::post('/login',[AuthController::class,'login'] );
+Route::middleware('auth:sanctum')->get('/logout', [AuthController::class,'logout']);
+
+Route::get('teste',[AuthController::class,'teste'])->middleware(['auth:sanctum']);
+Route::get('tokens',[AuthController::class,'GetTokens'])->middleware(['auth:sanctum']);
