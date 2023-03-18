@@ -12,4 +12,9 @@ class Grupo extends Model
         'nome',
         'descricao'
     ];
+
+    public function regras()
+    {
+        return $this->belongsToMany(Regra::class);
+    }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use App\Models\Regra;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -23,8 +25,17 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $regras = Regra::all();
         $this->registerPolicies();
-
-        //
+        foreach ($regras as $regra) {
+            Gate::define($regra->regra, function (User $user, $autorizacao) {
+                foreach ($user->grupo->regras as $UserRegra) {
+                    if ($UserRegra->regra == $autorizacao) {
+                        return true;
+                    };
+                }
+                return false;
+            });
+        }
     }
 }
