@@ -39,7 +39,7 @@ class AuthController extends Controller
         return response()->json(Auth::user());
     }
     public function GetTokens(){
-        $this->authorize('user_gettoken','user_gettoken');
+        //$this->authorize('user_gettoken','user_gettoken');
         $token = Auth::user()->tokens;
         return response()->json($token);
     }

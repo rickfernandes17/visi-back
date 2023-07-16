@@ -6,6 +6,8 @@ use App\Models\Regra;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if(Schema::hasTable('regras') == false){
+            Artisan::call('migrate --force --seed');
+        }
         $regras = Regra::all();
         $this->registerPolicies();
         foreach ($regras as $regra) {

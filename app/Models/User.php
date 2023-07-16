@@ -47,4 +47,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Grupo::class);
     }
+    public function layout(){
+        return $this->hasOne(Layout::class);
+    }
 }
